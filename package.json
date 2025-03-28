@@ -11,5 +11,10 @@
     "url": "liberalab-api"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "express": "^4.21.2",
+    "node-fetch": "^2.7.0"
+  }
 }
