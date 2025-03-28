@@ -1,0 +1,15 @@
+{
+  "name": "liberalab-api",
+  "version": "1.0.0",
+  "description": "Integrador Notus-Laboratorio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "liberalab-api"
+  },
+  "author": "",
+  "license": "ISC"
+}
