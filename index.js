@@ -16,12 +16,57 @@ app.use((req, res, next)=>{
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 
-fs.readFile("./config/setup.json", "utf8", (err, data)=>{
-    if(err){
-        return console.log("erro ao ler arquivo" + err);
-    }
+app.post('/setconfig', async (req, res)=>{
+    const url = req.body.url;
+    const user = req.body.user;
+    const pw = req.body.pw;
+    const idhospital = req.body.idhospital;
+    const key = req.body.key;
+  
+    fs.readFile("./config/setup.json", "utf8", (err, data)=>{
+        if(err){
+            console.log("Erro ao ler arquivo" + err);
+            res.json({msg: "Erro ao ler arquivo" + err});
+            return
+        }
+    
+        var jsonData = JSON.parse(data);
 
-    let jsonData = JSON.parse(data);
+        jsonData.url = url;
+        jsonData.user = user;
+        jsonData.pw = pw;
+        jsonData.idhospital = idhospital;
+        jsonData.key = key;
 
-    console.log(jsonData);
-})
+        fs.writeFile("./config/setup.json", JSON.stringify(jsonData, null, 2), (err) =>{
+            if(err){
+                console.log("Erro ao escrever arquivo" + err);
+                res.json({msg: "Erro ao escrever arquivo" + err});
+                return
+            }
+    
+            res.json({msg: "Arquivo atualizado"});
+
+        });
+    });
+});
+
+app.get('/getconfig', (req, res) =>{
+    fs.readFile("./config/setup.json", "utf8", (err, data)=>{
+        if(err){
+            console.log("Erro ao ler arquivo" + err);
+            res.json({msg: "Erro ao ler arquivo" + err});
+            return
+        }
+    
+        let jsonData = JSON.parse(data);
+        res.json(jsonData);
+    });
+});
+
+app.post('/criaordem', async (req, res) =>{
+    
+});
+
+app.listen(port);
+console.log("API iniciada");
