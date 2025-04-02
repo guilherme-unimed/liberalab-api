@@ -1,0 +1,29 @@
+{
+    "pedido":{
+        "convenio": "10",
+        "observacao": "Texto Livre",
+        "carteirinha": "00810000001112223",
+        "guia": "100100000001",
+        "emissaoguia": "2025-03-31",
+        "acidente": "9",
+        "atendimentorn": "N",
+        "regatendimento": "01"
+    },
+    "paciente": {
+        "codigo": "08455599923",
+        "nome": "TESTE PACIENTE",
+        "sexo": "M",
+        "dtnasc": "1990-09-05",
+        "cpf": "08455599923"
+    },
+    "medico": {
+        "nome": "TESTE MEDICO",
+        "crm": "111111",
+        "conselho": "CRM",
+        "uf": "PR"
+    },
+    "exames": [{
+        "codigo": "40304361",
+        "urgente": "0"
+    }]
+}

@@ -65,7 +65,120 @@ app.get('/getconfig', (req, res) =>{
 });
 
 app.post('/criaordem', async (req, res) =>{
-    
+
+    const p_convenio = req.body.pedido.convenio;
+    const p_observacao = req.body.pedido.observacao;
+    const p_carteirinha = req.body.pedido.carteirinha;
+    const p_guia = req.body.pedido.guia;
+    const p_emissaoguia = req.body.pedido.emissaoguia;
+    const p_acidente = req.body.pedido.acidente
+    const p_atendimentorn = req.body.pedido.atendimentorn;
+    const p_regatendimento = req.body.pedido.regatendimento;
+    const pa_codigo = req.body.paciente.codigo;
+    const pa_nome = req.body.paciente.nome;
+    const pa_sexo = req.body.paciente.sexo;
+    const pa_dtnasc = req.body.paciente.dtnasc;
+    const pa_cpf = req.body.paciente.cpf;
+    const m_nome = req.body.medico.nome
+    const m_crm = req.body.medico.crm;
+    const m_conselho = req.body.medico.conselho;
+    const m_uf = req.body.medico.uf;
+    const exames = req.body.exames;
+
+    let comp_exames = '';
+
+    for(let i=0; i<exames.length;i++){
+        comp_exames = comp_exames + `
+        <exames>
+            <exame>
+                <codigo>${exames[i].codigo}</codigo>
+                <medicos>
+                    <medico>
+                        <nome>${m_nome}</nome>
+                        <crm>${m_crm}</crm>
+                        <conselho>${m_conselho}</conselho>
+                        <uf>${m_uf}</uf>
+                    </medico>
+                </medicos>
+                <urgente>${exames[i].urgente}</urgente>
+                <codigoSolicitacaoExame></codigoSolicitacaoExame>
+            </exame>
+        </exames>`;
+    }
+
+    var xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:shif="http://www.shift.com.br">
+        <soapenv:Header/>
+        <soapenv:Body>
+            <shif:ImportaPedido>
+                <shif:idHospital>HSHIS</shif:idHospital>
+                <shif:pedidoLab><![CDATA[
+    <pedidoLab>
+        <pedido>
+            <codigo></codigo>
+            <ordemServico></ordemServico>
+            <posto>1</posto>
+            <convenio>${p_convenio}</convenio>
+            <observacao>${p_observacao}</observacao>
+            <dadosCadastrais>
+                <dadoCadastral>
+                    <codigo>1</codigo>
+                    <valor>${p_carteirinha}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>11</codigo>
+                    <valor>${p_guia}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>5</codigo>
+                    <valor>${p_guia}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>6</codigo>
+                    <valor>${p_emissaoguia}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>26</codigo>
+                    <valor>${p_acidente}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>25</codigo>
+                    <valor>${p_atendimentorn}</valor>
+                </dadoCadastral>
+                <dadoCadastral>
+                    <codigo>38</codigo>
+                    <valor>${p_regatendimento}</valor>
+                </dadoCadastral>
+            </dadosCadastrais>
+        </pedido>
+        <paciente>
+        	<codigo>${pa_codigo}</codigo>
+		    <nome>${pa_nome}</nome>
+		    <sexo>${pa_sexo}</sexo>
+		    <dtNascimento>${pa_dtnasc}</dtNascimento>
+            <cpf>${pa_cpf}</cpf>
+        </paciente>
+        ${comp_exames}
+    </pedidoLab>
+    ]]>
+                </shif:pedidoLab>
+            </shif:ImportaPedido>
+        </soapenv:Body>
+    </soapenv:Envelope> `
+
+    res.send(xml);
+
+    /*fetch('https://integracao.shiftcloud.com.br/shift/integracao/unimedparanagua/wshis/shift.bs.WSHIS.cls', {
+        method: 'post',
+        body: xml,
+        headers: {'Content-Type': 'application/xml',
+            'SOAPAction': 'http://www.shift.com.br/shift.bs.WSHIS.ImportaPedido'
+        }
+    }).then(data=>{
+        data.text().then(text => {
+            console.log(text);
+        })
+        res.json(data);
+    });*/
 });
 
 app.listen(port);
