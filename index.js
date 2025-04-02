@@ -89,7 +89,6 @@ app.post('/criaordem', async (req, res) =>{
 
     for(let i=0; i<exames.length;i++){
         comp_exames = comp_exames + `
-        <exames>
             <exame>
                 <codigo>${exames[i].codigo}</codigo>
                 <medicos>
@@ -102,8 +101,7 @@ app.post('/criaordem', async (req, res) =>{
                 </medicos>
                 <urgente>${exames[i].urgente}</urgente>
                 <codigoSolicitacaoExame></codigoSolicitacaoExame>
-            </exame>
-        </exames>`;
+            </exame>`;
     }
 
     var xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:shif="http://www.shift.com.br">
@@ -157,7 +155,9 @@ app.post('/criaordem', async (req, res) =>{
 		    <dtNascimento>${pa_dtnasc}</dtNascimento>
             <cpf>${pa_cpf}</cpf>
         </paciente>
+        <exames>
         ${comp_exames}
+        </exames>
     </pedidoLab>
     ]]>
                 </shif:pedidoLab>
@@ -165,9 +165,9 @@ app.post('/criaordem', async (req, res) =>{
         </soapenv:Body>
     </soapenv:Envelope> `
 
-    res.send(xml);
+   
 
-    /*fetch('https://integracao.shiftcloud.com.br/shift/integracao/unimedparanagua/wshis/shift.bs.WSHIS.cls', {
+    fetch('https://integracao.shiftcloud.com.br/shift/integracao/unimedparanagua/wshis/shift.bs.WSHIS.cls', {
         method: 'post',
         body: xml,
         headers: {'Content-Type': 'application/xml',
@@ -177,8 +177,9 @@ app.post('/criaordem', async (req, res) =>{
         data.text().then(text => {
             console.log(text);
         })
-        res.json(data);
-    });*/
+    });
+
+    res.send(xml);
 });
 
 app.listen(port);
